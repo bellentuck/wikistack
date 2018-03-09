@@ -30,9 +30,23 @@ app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, '/public')));
 
 
-// LISTEN STATEMT ------------------ //
-const server = app.listen(3000, function() {
-  console.log('Server chillin on port 3000');
+// DB CONFIG ------------------//
+const models = require('./models');
+models.db.sync({force: true})
+.then(() => {
+  console.log('All tables created!');
+  // LISTEN STATEMT ------------------ //
+  app.listen(3000, function() {
+    console.log('Server chillin on port 3000');
+  });
+  const io = socketio.listen(server);
 })
-const io = socketio.listen(server);
+.catch(console.error.bind(console));
+
+
+// LISTEN STATEMT ------------------ //
+// const server = app.listen(3000, function() {
+//   console.log('Server chillin on port 3000');
+// })
+// const io = socketio.listen(server);
 
