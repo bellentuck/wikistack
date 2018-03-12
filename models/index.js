@@ -3,6 +3,7 @@ const db = new Sequelize('postgres://localhost:5432/wikistack', {logging: false}
 // Specify options in second param on Sequelize constructor,
 //  e.g. set logging to false to elminiate verbose sequelize logging
 
+// Page Model
 const Page = db.define('page', {
   // field: Sequelize.TEXT,
   title: {type: Sequelize.STRING, allowNull: false},
@@ -33,11 +34,19 @@ function urlTitleMaker(title) {
   }
 }
 
+
+// User Model
 const User = db.define('user', {
   // field: Sequelize.TEXT,
   name: {type: Sequelize.STRING, allowNull: false},
-  email: {type: Sequelize.STRING, allowNull: false, validate: {isEmail: true}}
+  email: {type: Sequelize.STRING, allowNull: false }
+  //validate: {isEmail: true}}
 });
+
+
+// Associations
+Page.belongsTo(User, { as: 'author' });
+
 
 module.exports = {
   db,

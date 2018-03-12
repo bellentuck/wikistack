@@ -34,8 +34,8 @@ app.use(express.static(path.join(__dirname, '/public')));
 
 // DB CONFIG ------------------//
 const models = require('./models');
-models.db.sync({force: false})
-.then(() => {
+models.db.sync({force: false}) // If 'true', will re-create tables
+.then(() => {                  // on each 'npm start'
   console.log('All tables created!');
   // LISTEN STATEMT ------------------ //
   const server = app.listen(3000, function() {
