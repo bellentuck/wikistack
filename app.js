@@ -3,7 +3,7 @@ const express = require('express');
 const morgan = require('morgan');
 const nunjucks = require('nunjucks');
 const app = express();
-//const routes = require('./routes');
+const routes = require('./routes');
 const bodyParser = require('body-parser');
 const socketio = require('socket.io');
 const path = require('path');
@@ -24,6 +24,8 @@ app.use(bodyParser.urlencoded({ extended: true }));  // true? false?
 // for ajax requests:
 app.use(bodyParser.json());
 
+app.use(routes);
+
 
 
 // UI CONFIG ------------------ //
@@ -32,11 +34,11 @@ app.use(express.static(path.join(__dirname, '/public')));
 
 // DB CONFIG ------------------//
 const models = require('./models');
-models.db.sync({force: true})
+models.db.sync({force: false})
 .then(() => {
   console.log('All tables created!');
   // LISTEN STATEMT ------------------ //
-  app.listen(3000, function() {
+  const server = app.listen(3000, function() {
     console.log('Server chillin on port 3000');
   });
   const io = socketio.listen(server);
